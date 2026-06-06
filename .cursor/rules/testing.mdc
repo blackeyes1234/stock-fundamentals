@@ -1,0 +1,21 @@
+---
+description: Testing conventions with Vitest
+globs: "**/*.test.{ts,tsx},tests/**"
+alwaysApply: false
+---
+
+# Testing
+
+- Unit tests live in `tests/unit/` and use Vitest.
+- Test schemas, services, and pure utilities; mock repositories in service tests.
+- Name files `*.test.ts` or `*.test.tsx`.
+- Prefer behavior assertions over implementation details.
+
+```typescript
+// ✅ GOOD
+it("rejects invalid symbols", () => {
+  expect(stockSymbolSchema.safeParse("").success).toBe(false);
+});
+```
+
+- Add integration tests in `tests/integration/` when touching RLS or auth flows.

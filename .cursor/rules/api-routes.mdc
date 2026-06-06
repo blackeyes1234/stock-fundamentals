@@ -1,0 +1,23 @@
+---
+description: API route handler conventions
+globs: "**/app/api/**"
+alwaysApply: false
+---
+
+# API routes
+
+- Keep route handlers thin: validate input, authorize, delegate to services.
+- Return structured JSON errors with appropriate status codes.
+- Verify webhook signatures before processing payloads.
+- Use admin Supabase client only in trusted webhook/cron handlers.
+
+```typescript
+export async function POST(request: Request) {
+  const body = await request.json();
+  const parsed = schema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid input" }, { status: 400 });
+  }
+  // delegate to service...
+}
+```

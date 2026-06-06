@@ -1,0 +1,10 @@
+import { NextResponse } from "next/server";
+
+export async function POST() {
+  return NextResponse.json(
+    {
+      message: "Webhook handler placeholder. Verify signatures before processing.",
+    },
+    { status: 501 },
+  );
+}

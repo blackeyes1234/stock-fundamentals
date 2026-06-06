@@ -1,0 +1,2 @@
+-- Local/staging seed data placeholder.
+-- insert into public.profiles (id, email, display_name) values (...);

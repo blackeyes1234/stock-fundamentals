@@ -1,0 +1,25 @@
+---
+description: React and Next.js component patterns
+globs: **/*.tsx
+alwaysApply: false
+---
+
+# React components
+
+- Use functional components and server components by default.
+- Add `"use client"` only when hooks or browser APIs are required.
+- Keep components presentational; move data access to Server Actions or page loaders.
+- Colocate feature components under `src/components/features/`.
+- Shared primitives live in `src/components/ui/`.
+
+```tsx
+// ❌ BAD — data fetch in client component
+"use client";
+useEffect(() => { fetch("/api/profile")... }, []);
+
+// ✅ GOOD — fetch in server component or Server Action
+export default async function Page() {
+  const profile = await getCurrentUserProfile();
+  return <ProfileCard profile={profile} />;
+}
+```

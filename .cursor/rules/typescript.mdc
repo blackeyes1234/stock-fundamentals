@@ -1,0 +1,25 @@
+---
+description: TypeScript conventions
+globs: **/*.{ts,tsx}
+alwaysApply: false
+---
+
+# TypeScript
+
+- Use strict typing; avoid `any` unless bridging untyped third-party APIs.
+- Prefer `type` for unions and object shapes; use `interface` for extendable contracts.
+- Export types from `src/types/` when shared across layers.
+- Use `unknown` in catch blocks, then narrow before use.
+
+```typescript
+// ❌ BAD
+catch (e) {
+  console.log(e.message);
+}
+
+// ✅ GOOD
+catch (error) {
+  const message = error instanceof Error ? error.message : "Unknown error";
+  throw new Error(`Operation failed: ${message}`, { cause: error });
+}
+```

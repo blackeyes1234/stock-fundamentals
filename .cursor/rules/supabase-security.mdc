@@ -1,0 +1,26 @@
+---
+description: Supabase client usage and security guardrails
+globs: "**/lib/supabase/**,**/actions/**,**/repositories/**"
+alwaysApply: false
+---
+
+# Supabase security
+
+- Browser client (`client.ts`): auth UI only, not general DB access.
+- Server client (`server.ts`): session-scoped reads/writes in Server Actions and routes.
+- Admin client (`admin.ts`): webhooks/cron only; imports `server-only`.
+- Never import `admin.ts` from `"use client"` files.
+- Every table needs RLS; default deny, then explicit policies.
+- Migrations live in `supabase/migrations/` — not dashboard-only changes.
+
+```typescript
+// ❌ BAD
+const supabase = createAdminClient();
+export async function GET() {
+  return supabase.from("profiles").select("*"); // admin in user path
+}
+
+// ✅ GOOD
+const supabase = await createClient(); // server session client
+const { data: { user } } = await supabase.auth.getUser();
+```

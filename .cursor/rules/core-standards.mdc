@@ -1,0 +1,14 @@
+---
+description: Core coding standards for Stock Fundamentals
+alwaysApply: true
+---
+
+# Core standards
+
+- Keep diffs minimal; match existing patterns in the touched area.
+- Never commit secrets or put server keys in `NEXT_PUBLIC_*` variables.
+- Validate external input with Zod before services or repositories run.
+- Prefer Server Actions and route handlers over client-side data fetching.
+- Run `npm run lint`, `npm run typecheck`, and `npm test` after behavior changes.
+- Add or update tests when changing business logic or schemas.
+- Document env var or architecture changes in `docs/` and `AGENTS.md`.
