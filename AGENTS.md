@@ -2,7 +2,7 @@
 
 ## Product
 
-Web application for analyzing stock fundamentals. Users sign in via Supabase Auth, view dashboards, and inspect per-symbol metrics.
+Web application for analyzing stock fundamentals. Users sign in with Google via Supabase Auth, manage multiple named watchlists, and inspect per-symbol metrics.
 
 ## Stack
 
@@ -18,7 +18,8 @@ Web application for analyzing stock fundamentals. Users sign in via Supabase Aut
 |------|---------|
 | `src/app/(marketing)/` | Public landing pages |
 | `src/app/(auth)/` | Login, signup, OAuth callback |
-| `src/app/(app)/` | Authenticated app routes |
+| `src/app/(app)/` | Authenticated app routes (dashboard, watchlists, stocks) |
+| `src/app/(app)/watchlists/` | Create watchlists and add/remove symbols |
 | `src/app/api/` | Route handlers (health, webhooks) |
 | `src/actions/` | Server Actions — validate, authorize, delegate |
 | `src/services/` | Business logic and orchestration |

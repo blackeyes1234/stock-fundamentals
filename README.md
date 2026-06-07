@@ -38,13 +38,27 @@ Production-ready scaffold for a stock fundamentals web app using **Next.js App R
    npx supabase db push
    ```
 
-5. Start the dev server:
+5. Configure Google Sign-In:
+
+   - [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials → Create OAuth 2.0 Client ID (Web application)
+   - Authorized redirect URI: `https://<your-project-ref>.supabase.co/auth/v1/callback`
+   - Supabase Dashboard → Authentication → Providers → Google → paste Client ID and Secret
+   - Supabase Dashboard → Authentication → URL Configuration → add `http://localhost:3000/auth/callback` (and your production URL)
+
+6. Start the dev server:
 
    ```bash
    npm run dev
    ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000), sign in with Google, then manage watchlists at `/watchlists`.
+
+## Features
+
+- Google Sign-In via Supabase Auth
+- Multiple named watchlists per user
+- Add and remove stock symbols (validated with Zod)
+- Row Level Security on all user data
 
 ## Scripts
 

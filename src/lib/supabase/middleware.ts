@@ -1,6 +1,14 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+const protectedPrefixes = ["/dashboard", "/watchlists", "/stocks"];
+
+function isProtectedPath(pathname: string) {
+  return protectedPrefixes.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  );
+}
+
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
@@ -25,7 +33,23 @@ export async function updateSession(request: NextRequest) {
     },
   );
 
-  await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user && isProtectedPath(request.nextUrl.pathname)) {
+    const loginUrl = request.nextUrl.clone();
+    loginUrl.pathname = "/login";
+    loginUrl.searchParams.set("next", request.nextUrl.pathname);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  if (user && request.nextUrl.pathname === "/login") {
+    const watchlistsUrl = request.nextUrl.clone();
+    watchlistsUrl.pathname = "/watchlists";
+    watchlistsUrl.search = "";
+    return NextResponse.redirect(watchlistsUrl);
+  }
 
   return supabaseResponse;
 }

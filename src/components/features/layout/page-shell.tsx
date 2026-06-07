@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { AuthNav } from "@/components/features/layout/auth-nav";
+
 export function SiteHeader() {
   return (
     <header className="border-b border-zinc-200 bg-white/80 backdrop-blur">
@@ -9,12 +11,7 @@ export function SiteHeader() {
           Stock Fundamentals
         </Link>
         <nav className="flex items-center gap-4 text-sm text-zinc-600">
-          <Link href="/dashboard" className="hover:text-zinc-950">
-            Dashboard
-          </Link>
-          <Link href="/login" className="hover:text-zinc-950">
-            Sign in
-          </Link>
+          <AuthNav />
         </nav>
       </div>
     </header>
