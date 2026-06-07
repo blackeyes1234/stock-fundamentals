@@ -53,6 +53,8 @@ Production-ready scaffold for a stock fundamentals web app using **Next.js App R
 
 Open [http://localhost:3000](http://localhost:3000), sign in with Google, then manage watchlists at `/watchlists`.
 
+**Production:** https://stock-fundamentals.vercel.app (see [docs/deployment.md](docs/deployment.md)).
+
 ## Features
 
 - Google Sign-In via Supabase Auth
