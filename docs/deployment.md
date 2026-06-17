@@ -5,8 +5,8 @@
 | Service | URL |
 |---------|-----|
 | **Vercel app** | https://stock-fundamentals.vercel.app |
-| **Supabase prod** | `yhijrbtkjguzeexetycy` (dashboard name: blackeyes1234's Project) |
-| **Supabase dev** | `rltnukulvnoujpuxphwh` (stock-fundamentals) |
+| **Supabase prod** | `rltnukulvnoujpuxphwh` (stock-fundamentals) |
+| **Supabase local dev** | `yhijrbtkjguzeexetycy` (blackeyes1234's Project) |
 | **Health check** | https://stock-fundamentals.vercel.app/api/health |
 
 GitHub repo: https://github.com/blackeyes1234/stock-fundamentals  
@@ -18,84 +18,98 @@ Vercel project: `garvinho-3094s-projects/stock-fundamentals` (auto-deploys on pu
 
 | Environment | Supabase project | Config |
 |-------------|------------------|--------|
-| **Local dev** | `rltnukulvnoujpuxphwh` | `.env.local` |
-| **Production (Vercel)** | `yhijrbtkjguzeexetycy` | Vercel → Settings → Environment Variables |
+| **Local dev** | `yhijrbtkjguzeexetycy` (blackeyes1234's Project) | [`.env.local`](.env.local) |
+| **Production (Vercel)** | `rltnukulvnoujpuxphwh` (stock-fundamentals) | Vercel → Settings → Environment Variables |
 
-A third Supabase project could not be created (free tier limit: 2 active projects). Production uses the existing `yhijrbtkjguzeexetycy` project with migrations applied.
+Each environment uses its own `profiles`, `watchlists`, and `watchlist_items` tables on the matching Supabase project.
 
 ---
 
 ## Vercel environment variables (Production)
 
-Set in Vercel → **stock-fundamentals** → **Settings** → **Environment Variables**:
-
-| Variable | Source |
-|----------|--------|
-| `NEXT_PUBLIC_SUPABASE_URL` | `https://yhijrbtkjguzeexetycy.supabase.co` |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase prod → API Keys |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase prod → API Keys (secret) |
-| `DATABASE_URL` | Supabase prod → Connect → **Transaction pooler** (port **6543**) |
-
-Use the pooler host (`aws-1-us-east-1.pooler.supabase.com`), not `db.<ref>.supabase.co`.
+| Variable | Value |
+|----------|-------|
+| `NEXT_PUBLIC_SUPABASE_URL` | `https://rltnukulvnoujpuxphwh.supabase.co` |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | stock-fundamentals → API Keys |
+| `SUPABASE_SERVICE_ROLE_KEY` | stock-fundamentals → API Keys (secret) |
+| `DATABASE_URL` | stock-fundamentals → Connect → **Transaction pooler** (port **6543**, `aws-1-ca-central-1`) |
 
 ---
 
-## Supabase production auth URLs
+## Local environment (`.env.local`)
 
-In **production Supabase** (`yhijrbtkjguzeexetycy`) → **Authentication** → **URL Configuration**:
+| Variable | Value |
+|----------|-------|
+| `NEXT_PUBLIC_SUPABASE_URL` | `https://yhijrbtkjguzeexetycy.supabase.co` |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | blackeyes1234's Project → API Keys |
+| `SUPABASE_SERVICE_ROLE_KEY` | blackeyes1234's Project → API Keys |
+| `DATABASE_URL` | blackeyes → pooler port **6543** (`aws-1-us-east-1`) |
+
+Restart `npm run dev` after changing `.env.local`.
+
+---
+
+## Supabase Auth URL configuration
+
+### Local — `yhijrbtkjguzeexetycy`
 
 | Setting | Value |
 |---------|-------|
-| **Site URL** | `https://stock-fundamentals.vercel.app` |
-| **Redirect URLs** | `https://stock-fundamentals.vercel.app/auth/callback` |
+| Site URL | `http://localhost:3000` |
+| Redirect URLs | `http://localhost:3000/auth/callback` |
 
-(Applied via `supabase config push` during initial deploy.)
+Reference: [`supabase/config.local.toml`](supabase/config.local.toml)
+
+### Production — `rltnukulvnoujpuxphwh`
+
+| Setting | Value |
+|---------|-------|
+| Site URL | `https://stock-fundamentals.vercel.app` |
+| Redirect URLs | `https://stock-fundamentals.vercel.app/auth/callback` |
+
+Reference: [`supabase/config.prod.toml`](supabase/config.prod.toml)
+
+Apply via dashboard or:
+
+```powershell
+# Local auth URLs → blackeyes
+supabase link --project-ref yhijrbtkjguzeexetycy
+# copy auth section from config.local.toml into config.toml, then:
+supabase config push --yes
+
+# Prod auth URLs → stock-fundamentals
+supabase link --project-ref rltnukulvnoujpuxphwh
+# copy auth section from config.prod.toml into config.toml, then:
+supabase config push --yes
+```
 
 ---
 
-## Google Sign-In (production)
+## Google Sign-In
 
-### Google Cloud Console
-
-Add this **Authorized redirect URI** (keep dev URI if you still use the dev Supabase project):
-
-```
-https://yhijrbtkjguzeexetycy.supabase.co/auth/v1/callback
-```
-
-### Supabase production
-
-**Authentication** → **Providers** → **Google** → enable and paste the same Client ID + Secret used for dev.
+Use **separate** OAuth clients per Supabase project. See [google-oauth-setup.md](./google-oauth-setup.md).
 
 ---
 
 ## Migrations
 
-Apply to production:
-
 ```powershell
 supabase link --project-ref yhijrbtkjguzeexetycy
 supabase db push
-supabase link --project-ref rltnukulvnoujpuxphwh   # switch back to dev
+
+supabase link --project-ref rltnukulvnoujpuxphwh
+supabase db push
+
+# Default CLI link for local work:
+supabase link --project-ref yhijrbtkjguzeexetycy
 ```
 
 ---
 
 ## Deploy workflow
 
-1. Push to `main` on GitHub → Vercel builds and deploys automatically.
-2. Or manual deploy: `npx vercel --prod` from the repo root (requires Vercel CLI login).
-
----
-
-## Pre-deploy checklist
-
-- [ ] Migrations applied to prod Supabase
-- [ ] All 4 env vars set in Vercel Production
-- [ ] Supabase prod Site URL + Redirect URLs include Vercel domain
-- [ ] Google redirect URI includes prod Supabase callback
-- [ ] Google provider enabled on prod Supabase
-- [ ] `GET /api/health` returns `{"status":"ok"}`
+1. Push to `main` on GitHub → Vercel auto-deploys
+2. Or: `npx vercel --prod` from repo root
 
 ---
 
@@ -103,7 +117,7 @@ supabase link --project-ref rltnukulvnoujpuxphwh   # switch back to dev
 
 | Symptom | Fix |
 |---------|-----|
-| Google `redirect_uri_mismatch` | Add `https://yhijrbtkjguzeexetycy.supabase.co/auth/v1/callback` in Google |
-| DB errors on Vercel | Use transaction pooler `DATABASE_URL` (port 6543) |
-| Auth redirect loop | Confirm Vercel `/auth/callback` is in Supabase Redirect URLs |
-| Build fails | Check Vercel build logs; ensure env vars exist for Production |
+| Local data appears in wrong Supabase | Check `.env.local` points to `yhijrbtkjguzeexetycy` |
+| Prod data in wrong Supabase | Check Vercel env vars point to `rltnukulvnoujpuxphwh` |
+| Google `redirect_uri_mismatch` | Use correct callback URI for that project's OAuth client |
+| DB `ENOTFOUND` | Use pooler `DATABASE_URL` (port 6543), not `db.<ref>.supabase.co` |

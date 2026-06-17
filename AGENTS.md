@@ -27,6 +27,15 @@ Web application for analyzing stock fundamentals. Users sign in with Google via 
 | `src/lib/supabase/` | Browser, server, and admin clients |
 | `supabase/migrations/` | SQL migrations + RLS (source of truth) |
 
+## Supabase environments
+
+| Environment | Project ref | Dashboard name |
+|-------------|-------------|----------------|
+| Local (`.env.local`) | `yhijrbtkjguzeexetycy` | blackeyes1234's Project |
+| Production (Vercel) | `rltnukulvnoujpuxphwh` | stock-fundamentals |
+
+See [docs/deployment.md](./docs/deployment.md) and [docs/google-oauth-setup.md](./docs/google-oauth-setup.md).
+
 ## Commands
 
 ```bash

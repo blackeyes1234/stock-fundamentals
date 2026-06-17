@@ -43,7 +43,8 @@ Production-ready scaffold for a stock fundamentals web app using **Next.js App R
    - [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials → Create OAuth 2.0 Client ID (Web application)
    - Authorized redirect URI: `https://<your-project-ref>.supabase.co/auth/v1/callback`
    - Supabase Dashboard → Authentication → Providers → Google → paste Client ID and Secret
-   - Supabase Dashboard → Authentication → URL Configuration → add `http://localhost:3000/auth/callback` (and your production URL)
+   - Supabase Dashboard → Authentication → URL Configuration → add `http://localhost:3000/auth/callback`
+   - Use **separate** Google OAuth clients per Supabase project — see [docs/google-oauth-setup.md](docs/google-oauth-setup.md)
 
 6. Start the dev server:
 
@@ -53,7 +54,8 @@ Production-ready scaffold for a stock fundamentals web app using **Next.js App R
 
 Open [http://localhost:3000](http://localhost:3000), sign in with Google, then manage watchlists at `/watchlists`.
 
-**Production:** https://stock-fundamentals.vercel.app (see [docs/deployment.md](docs/deployment.md)).
+**Local Supabase:** blackeyes1234's Project (`yhijrbtkjguzeexetycy`) via `.env.local`  
+**Production:** https://stock-fundamentals.vercel.app → stock-fundamentals Supabase (`rltnukulvnoujpuxphwh`) — see [docs/deployment.md](docs/deployment.md).
 
 ## Features
 

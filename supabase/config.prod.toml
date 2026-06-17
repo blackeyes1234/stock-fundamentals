@@ -1,0 +1,9 @@
+# Supabase auth config for production (stock-fundamentals project)
+# Used with: supabase config push --project-ref rltnukulvnoujpuxphwh --yes
+
+project_id = "stock-fundamentals-prod"
+
+[auth]
+enabled = true
+site_url = "https://stock-fundamentals.vercel.app"
+additional_redirect_urls = ["https://stock-fundamentals.vercel.app/auth/callback"]

@@ -1,0 +1,9 @@
+# Supabase auth config for local dev (blackeyes1234's Project)
+# Used with: supabase config push --project-ref yhijrbtkjguzeexetycy --yes
+
+project_id = "blackeyes-local"
+
+[auth]
+enabled = true
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["http://localhost:3000/auth/callback"]
